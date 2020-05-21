@@ -57,7 +57,7 @@ export function RenderPassword({
             {...input}
           />
           <InputGroup.Append>
-            <InputGroup.Text id={id + "append"}>
+            <InputGroup.Text id={id + "append"} className="pt-0 pb-0">
               <IconButton
                 size="small"
                 aria-label="toggle password visibility"

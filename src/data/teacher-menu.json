@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Attendance",
+    "items": [
+      {
+        "id": 1,
+        "name": "Mark Attendance",
+        "path": "/mark-attendance"
+      },
+      {
+        "id": 2,
+        "name": "View Attendance",
+        "path": "/view-attendance"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Marks",
+    "items": [
+      {
+        "id": 1,
+        "name": "View Marks",
+        "path": "/view-marks"
+      },
+      {
+        "id": 2,
+        "name": "Enter Marks",
+        "path": "/enter-marks"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Homework",
+    "items": [
+      {
+        "id": 1,
+        "name": "View Homework",
+        "path": "/view-homework"
+      },
+      {
+        "id": 2,
+        "name": "Upload Homework",
+        "path": "/upload-homework"
+      }
+    ]
+  }
+]

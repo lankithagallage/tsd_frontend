@@ -1,5 +1,10 @@
 import React from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  withRouter,
+} from "react-router-dom";
 import Cookies from "js-cookie";
 
 import Index from "./com/Index";

@@ -33,7 +33,10 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import Cookies from "js-cookie";
 import { decrypt } from "./../../lib/global/helpers";
-import data from "./../../data/menu.json";
+import adminmenu from "./../../data/admin-menu.json";
+import teachermenu from "./../../data/teacher-menu.json";
+import parentmenu from "./../../data/parent-menu.json";
+import studentmenu from "./../../data/student-menu.json";
 
 const styles = (theme) => ({
   drawer: {
@@ -69,6 +72,7 @@ class AppDrawer extends Component {
     FirstName: undefined,
     Email: undefined,
     FirstLetter: undefined,
+    menu: [],
   };
 
   handleClick = (e) => {
@@ -82,11 +86,28 @@ class AppDrawer extends Component {
       Email: user.email,
       FirstLetter: user.first_name.charAt(0).toUpperCase(),
     });
+
+    var usetType = decrypt(Cookies.get("usuario"));
+    switch (usetType) {
+      case "admin":
+        this.setState({ menu: adminmenu });
+        break;
+      case "teacher":
+        this.setState({ menu: teachermenu });
+        break;
+      case "parent":
+        this.setState({ menu: parentmenu });
+        break;
+      case "student":
+        this.setState({ menu: studentmenu });
+        break;
+    }
   }
 
   render() {
+    let path = window.location.pathname;
+    console.log(path);
     const { classes } = this.props;
-    const items = data;
 
     const drawer = () => {
       return (
@@ -106,7 +127,7 @@ class AppDrawer extends Component {
           </Box>
           <Divider />
 
-          {items.map((list) => {
+          {this.state.menu.map((list) => {
             return (
               <List
                 className={classes.root}
@@ -144,11 +165,7 @@ class AppDrawer extends Component {
                                     button
                                     key={sitem.id}
                                     className={classes.nested}
-                                    onClick={() =>
-                                      window.location.replace(
-                                        sitem.path ? sitem.path : "#"
-                                      )
-                                    }
+                                    selected={sitem.path == path ? true : false}
                                     button
                                     component={Link}
                                     to={sitem.path ? sitem.path : "#"}
@@ -161,14 +178,11 @@ class AppDrawer extends Component {
                                 );
                               })}
                             </List>
-                          </Collapse>{" "}
+                          </Collapse>
                         </div>
                       ) : (
                         <ListItem
                           button
-                          onClick={() =>
-                            window.location.replace(item.path ? item.path : "#")
-                          }
                           key={item.id}
                           button
                           component={Link}

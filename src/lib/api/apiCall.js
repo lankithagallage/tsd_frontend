@@ -12,7 +12,6 @@ export function axiosCall(method, url, config, data, usetoken) {
 
   url = Config.BaseAddress + url;
 
-  console.log(url);
   return axios({
     method: method,
     url: url,

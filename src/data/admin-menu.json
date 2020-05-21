@@ -1,0 +1,215 @@
+[
+  {
+    "id": 1,
+    "title": "Master",
+    "items": [
+      {
+        "id": 1,
+        "name": "Configuration",
+        "path": "",
+        "subitems": [
+          {
+            "id": 1,
+            "name": "Access Levels",
+            "path": "/admin/master/access-levels"
+          },
+          {
+            "id": 2,
+            "name": "Marital Status",
+            "path": "/admin/master/maritial-status"
+          },
+          {
+            "id": 3,
+            "name": "Titles",
+            "path": "/admin/master/titles"
+          },
+          {
+            "id": 4,
+            "name": "User Types",
+            "path": "/admin/master/user-types"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Configuration",
+    "items": [
+      {
+        "id": 1,
+        "name": "Organzation",
+        "path": "/admin/configuration/organization"
+      },
+      {
+        "id": 2,
+        "name": "Class Config",
+        "path": "",
+        "subitems": [
+          {
+            "id": 1,
+            "name": "Sections",
+            "path": "/admin/configuration/section"
+          },
+          {
+            "id": 2,
+            "name": "Classes",
+            "path": "/admin/configuration/classes"
+          },
+          {
+            "id": 3,
+            "name": "Subjects",
+            "path": "/admin/configuration/subjects"
+          },
+          {
+            "id": 4,
+            "name": "Marking Grades",
+            "path": "/admin/configuration/marking-grades"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Administrators",
+    "items": [
+      {
+        "id": 1,
+        "name": "Manage Admins",
+        "path": "/admin/administrators"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Teachers",
+    "items": [
+      {
+        "id": 1,
+        "name": "Teacher Config",
+        "path": "",
+        "subitems": [
+          {
+            "id": 1,
+            "name": "Institutes",
+            "path": "/admin/teachers/institutes"
+          },
+          {
+            "id": 2,
+            "name": "Qualificaction",
+            "path": "/admin/teachers/qualification"
+          },
+          {
+            "id": 3,
+            "name": "Qualification Speciality",
+            "path": "/admin/teachers/speciality"
+          },
+          {
+            "id": 4,
+            "name": "Grades",
+            "path": "/admin/teachers/grades"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Manage Teachers",
+        "path": "/admin/teachers/manage"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Parents",
+    "items": [
+      {
+        "id": 1,
+        "name": "Parents Config",
+        "path": "",
+        "subitems": [
+          {
+            "id": 1,
+            "name": "Occupation Category",
+            "path": "/admin/parents/occupation-category"
+          },
+          {
+            "id": 2,
+            "name": "Occupations",
+            "path": "/admin/parents/occupations"
+          },
+          {
+            "id": 2,
+            "name": "Relations",
+            "path": "/admin/parents/relations"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Manage Parents",
+        "path": "/admin/parents/manage"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Students",
+    "items": [
+      {
+        "id": 1,
+        "name": "Manage Students",
+        "path": "/students"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Extra Activity",
+    "items": [
+      {
+        "id": 1,
+        "name": "Extra Activity Config",
+        "path": "",
+        "subitems": [
+          {
+            "id": 1,
+            "name": "Activity Type",
+            "path": "/extra-activity/type"
+          },
+          {
+            "id": 2,
+            "name": "Activity Position",
+            "path": "/extra-activity/position"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Manage Extra Activity",
+        "path": "/extra-activity/manage"
+      },
+      {
+        "id": 3,
+        "name": "Manage Students",
+        "path": "/extra-activity/students"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Student Marks",
+    "items": [
+      {
+        "id": 1,
+        "name": "Enter Marks",
+        "path": "/marks/enter"
+      },
+      {
+        "id": 2,
+        "name": "View Marks",
+        "path": "/marks/view"
+      }
+    ]
+  }
+]

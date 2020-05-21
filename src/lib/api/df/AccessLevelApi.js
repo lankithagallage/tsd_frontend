@@ -6,7 +6,7 @@ export function accessLevelRequest(api, data = {}, usetoken = true) {
   let config = {};
 
   switch (api) {
-    //get all contacts
+    //get all
     case "retrieve":
       method = "post";
       url = "df/accessLevel/retrieve";

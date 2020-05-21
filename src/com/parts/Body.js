@@ -2,16 +2,11 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Grid } from "@material-ui/core/";
 import { withStyles } from "@material-ui/core/styles";
-import Master from "../content/master/Index";
-import Configuration from "../content/configuration/Index";
-import Administrators from "../content/administrators/Index";
-import Teachers from "../content/teachers/Index";
-import Parents from "../content/parents/Index";
-import Students from "../content/students/Index";
-import ExtraActivity from "../content/extra-activity/Index";
+import Admin from "../content/admin/Index";
+import Teacher from "../content/teacher/Index";
+import Parent from "../content/parent/Index";
+import Student from "../content/student/Index";
 import Dashboard from "../content/dashboard/Index";
-import Chat from "../content/dashboard/Chat";
-import Downloads from "../content/dashboard/Downloads";
 
 let drawerWidth = 250;
 let appbarHeight = 60;
@@ -41,32 +36,11 @@ class Body extends Component {
     const { classes } = this.props;
     return (
       <Grid className={classes.container}>
-        <Router>
-          <Switch>
-            <Route exact path="/master/*" component={Master}></Route>
-            <Route
-              exact
-              path="/configuration/*"
-              component={Configuration}
-            ></Route>
-            <Route
-              exact
-              path="/administrators/"
-              component={Administrators}
-            ></Route>{" "}
-            <Route exact path="/teachers/*" component={Teachers}></Route>
-            <Route exact path="/parents/*" component={Parents}></Route>
-            <Route exact path="/students/" component={Students}></Route>
-            <Route
-              exact
-              path="/extra-activity/*"
-              component={ExtraActivity}
-            ></Route>
-            <Route exact path="/chat" component={Chat}></Route>
-            <Route exact path="/downloads" component={Downloads}></Route>
-            <Route exact path="/*" component={Dashboard}></Route>
-          </Switch>
-        </Router>
+        <Route path="/admin/*" component={Admin}></Route>
+        <Route path="/teacher/*" component={Teacher}></Route>
+        <Route path="/parent/*" component={Parent}></Route>
+        <Route path="/student/*" component={Student}></Route>
+        <Route path="/*" component={Dashboard}></Route>
       </Grid>
     );
   }
