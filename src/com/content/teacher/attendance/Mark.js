@@ -25,6 +25,7 @@ import { contactRequest } from "../../../../lib/api/m/ContactApi";
 import { classRequest } from "../../../../lib/api/m/ClassApi";
 import { teacherClassRequest } from "../../../../lib/api/rel/TeacherClassApi";
 import { studentClassRequest } from "../../../../lib/api/rel/StudentClassApi";
+import { attendanceRequest } from "../../../../lib/api/mod/AttendanceApi";
 
 import m_student from "../../../../lib/class/data/m_student";
 import mod_attendance from "../../../../lib/class/data/mod_attendance";
@@ -81,13 +82,15 @@ class Mark extends Component {
     var date = new Date();
     for (var prop in values) {
       var record = values[prop];
-      console.log(record);
       var att = new mod_attendance();
       att.date = date;
       att.studentID = prop;
       att.attended = record.attended;
       att.authorized_absence = record.authorized_absence;
+      attendanceRequest("add", att);
     }
+    alert("Attendance Added for Today");
+    window.location.reload();
   };
 
   render() {
@@ -128,7 +131,11 @@ class Mark extends Component {
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
               <ListGroup mb="3">
                 {this.state.students.map((student, index) => (
-                  <ListGroup.Item key={index}>
+                  <ListGroup.Item
+                    key={index}
+                    display="flex"
+                    justifyContent="between"
+                  >
                     <strong>
                       {index + 1} .{" "}
                       {student.first_name + " " + student.last_name}

@@ -10,7 +10,7 @@ export function attendanceRequest(api, data = {}, usetoken = true) {
     case "add":
       data._id = undefined;
       method = "post";
-      url = "attendance/add";
+      url = "class/attendance/add";
       data = data;
       usetoken = true;
       break;
@@ -18,7 +18,7 @@ export function attendanceRequest(api, data = {}, usetoken = true) {
     //get by id
     case "attendanceLookup":
       method = "post";
-      url = "attendance/lookup";
+      url = "class/attendance/lookup";
       data = { studentID: data.studentID, date: data.date };
       usetoken = true;
       break;

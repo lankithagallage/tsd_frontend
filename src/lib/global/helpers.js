@@ -100,6 +100,8 @@ export function renderTextBox({
   placeholder,
   value,
   name,
+  min,
+  max,
   smalltext,
   meta: { touched, error, warning },
 }) {
@@ -113,6 +115,8 @@ export function renderTextBox({
           required={required}
           readonly={readonly}
           id={id}
+          min={min}
+          max={max}
           placeholder={placeholder}
           value={value}
           {...input}

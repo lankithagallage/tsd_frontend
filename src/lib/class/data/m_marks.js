@@ -1,7 +1,7 @@
-import m_grade from "./m_grade";
+import m_class_section from "./m_class_section";
 import m_student from "./m_student";
 import m_class from "./m_class";
-import m_subject from "./m_subject";
+import df_subject from "./df_subject";
 
 class m_marks {
   constructor() {
@@ -20,15 +20,15 @@ class m_marks {
 
     this.__student = new m_student();
     this.__class = new m_class();
-    this.__subject = new m_subject();
-    this.__grade = new m_grade();
+    this.__subject = new df_subject();
+    this.__class_section = new m_class_section();
   }
 
   set(values) {
     this._id = values._id;
     this.student_id = values.student_id;
     this.class_id = values.class_id;
-    this.subject_id = subject_id.id;
+    this.subject_id = values.id;
     this.marks = values.marks;
     this.term = values.term;
     this.date = values.date;
@@ -41,7 +41,7 @@ class m_marks {
     this.__student = values.__student;
     this.__class = values.__class;
     this.__subject = values.__subject;
-    this.__grade = values.__grade;
+    this.__class_section = values.__class_section;
   }
 }
 

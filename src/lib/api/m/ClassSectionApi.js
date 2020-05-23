@@ -46,6 +46,14 @@ export function classSectionRequest(api, data = {}, usetoken = true) {
       usetoken = true;
       break;
 
+    //get by column
+    case "find":
+      method = "post";
+      url = "m/subject/find";
+      data = { name: data.name, value: data.value };
+      usetoken = true;
+      break;
+
     default:
       break;
   }
