@@ -1,16 +1,20 @@
 import m_contact from "./m_contact";
 
 class m_student extends m_contact {
-  constructor() {
+  constructor(params = null) {
     super();
-    this._id = "";
-    this.reg_no = "";
-    this.reg_date = null;
-    this.end_date = null;
+    if (params == null) {
+      this._id = "";
+      this.reg_no = "";
+      this.reg_date = null;
+      this.end_date = null;
+    } else {
+      super.set(params);
+      this.set(params);
+    }
   }
 
   set(values) {
-    super.set(this);
     this._id = values._id;
     this.reg_no = values.reg_no;
     this.reg_date = values.reg_date;

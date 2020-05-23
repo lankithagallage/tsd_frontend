@@ -159,56 +159,23 @@
       {
         "id": 1,
         "name": "Manage Students",
-        "path": "/students"
+        "path": "/admin/students/manage"
+      },
+      {
+        "id": 2,
+        "name": "Manage Classes",
+        "path": "/admin/students/classes"
       }
     ]
   },
   {
     "id": 7,
-    "title": "Extra Activity",
+    "title": "Modules",
     "items": [
       {
         "id": 1,
-        "name": "Extra Activity Config",
-        "path": "",
-        "subitems": [
-          {
-            "id": 1,
-            "name": "Activity Type",
-            "path": "/extra-activity/type"
-          },
-          {
-            "id": 2,
-            "name": "Activity Position",
-            "path": "/extra-activity/position"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Manage Extra Activity",
-        "path": "/extra-activity/manage"
-      },
-      {
-        "id": 3,
-        "name": "Manage Students",
-        "path": "/extra-activity/students"
-      }
-    ]
-  },
-  {
-    "id": 8,
-    "title": "Student Marks",
-    "items": [
-      {
-        "id": 1,
-        "name": "Enter Marks",
-        "path": "/marks/enter"
-      },
-      {
-        "id": 2,
-        "name": "View Marks",
-        "path": "/marks/view"
+        "name": "Notifications",
+        "path": "/admin/notifications"
       }
     ]
   }

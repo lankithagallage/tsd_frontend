@@ -46,6 +46,14 @@ export function studentClassRequest(api, data = {}, usetoken = true) {
       usetoken = true;
       break;
 
+    //get by column
+    case "find":
+      method = "post";
+      url = "rel/studentClass/find";
+      data = { name: data.name, value: data.value };
+      usetoken = true;
+      break;
+
     default:
       break;
   }

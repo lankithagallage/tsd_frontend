@@ -6,7 +6,7 @@
       {
         "id": 1,
         "name": "View Attendance",
-        "path": "/student-attendance"
+        "path": "/student/student-attendance"
       }
     ]
   },
@@ -17,7 +17,7 @@
       {
         "id": 1,
         "name": "View Marks",
-        "path": "/student-marks"
+        "path": "/student/student-marks"
       }
     ]
   },
@@ -28,7 +28,7 @@
       {
         "id": 1,
         "name": "View Homework",
-        "path": "/student-homework"
+        "path": "/student/student-homework"
       }
     ]
   }

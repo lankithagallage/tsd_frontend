@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 import { FormControl, Input, IconButton } from "@material-ui/core/";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import { LockOutlined, Visibility, VisibilityOff } from "@material-ui/icons";
 import Cookies from "js-cookie";
 import { Config } from "./Config";
@@ -97,6 +98,7 @@ export function renderTextBox({
   readonly,
   className,
   placeholder,
+  value,
   name,
   smalltext,
   meta: { touched, error, warning },
@@ -112,6 +114,7 @@ export function renderTextBox({
           readonly={readonly}
           id={id}
           placeholder={placeholder}
+          value={value}
           {...input}
         />
         <Form.Text text="muted" xs={12} md={6}>
@@ -142,9 +145,16 @@ export function renderCheckBox({
 }) {
   return (
     <Form.Group>
-      <Form.CustomCheckbox id={id} name={name} {...input}>
-        {label}
-      </Form.CustomCheckbox>
+      <Form.Check>
+        <Form.Checkbox
+          id={id}
+          name={name}
+          checked={input.checked}
+          onChange={() => {}}
+          {...input}
+        />
+        <Form.CheckLabel htmlFor={id}>{label}</Form.CheckLabel>
+      </Form.Check>
       {touched &&
         ((error && (
           <BP text="danger">
@@ -210,6 +220,7 @@ export function renderRadio({
             id={"radio" + item.id}
             name={name}
             required={required}
+            value={item.name}
             {...input}
           />
           <Form.CheckLabel htmlFor={"radio" + item.id}>
@@ -226,4 +237,31 @@ export function renderRadio({
 
 export function renderHidden({ input, id, name }) {
   return <Form.Input type="hidden" name={name} id={id} {...input} />;
+}
+
+export function RenderDatePicker({
+  input,
+  label,
+  id,
+  name,
+  type,
+  className,
+  selected,
+  meta: { touched, error },
+}) {
+  return (
+    <div>
+      <KeyboardDatePicker
+        margin="normal"
+        id={id}
+        name={name}
+        label={label}
+        format="MM/dd/yyyy"
+        KeyboardButtonProps={{
+          "aria-label": "change date",
+        }}
+      />
+      {touched && error && <span className="error_field">{error}</span>}
+    </div>
+  );
 }

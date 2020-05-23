@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Typography, Box } from "@material-ui/core";
-import { EditOutlined, DeleteOutline } from "@material-ui/icons";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Field, reduxForm, FormSection } from "redux-form";
+import { Typography, TextField, Grid } from "@material-ui/core";
+import { Field, reduxForm, reset, initialize, FormSection } from "redux-form";
+import { EditOutlined, DeleteOutline } from "@material-ui/icons";
 import {
   Row,
   Col,
@@ -11,20 +11,25 @@ import {
   Button,
   ListGroup,
   Badge,
+  Box,
 } from "bootstrap-4-react";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
+import {
+  renderHidden,
+  renderSelect,
+  renderTextBox,
+  renderCheckBox,
+} from "../../../../lib/global/helpers";
+import m_teacher from "../../../../lib/class/data/m_teacher";
 import Contact from "../__common/Contact";
+import { contactRequest } from "../../../../lib/api/m/ContactApi";
 
 import df_teacher_grade from "../../../../lib/class/data/df_teacher_grade";
 import df_marital_status from "../../../../lib/class/data/df_marital_status";
-import Call from "../../../../lib/api/Call";
-import {
-  renderTextBox,
-  renderCheckBox,
-  renderSelect,
-} from "../../../../lib/global/helpers";
 
 const styles = (theme) => ({});
+const formName = "teacherForm";
 
 class Manage extends Component {
   constructor(props) {
@@ -43,13 +48,76 @@ class Manage extends Component {
     this.status.map((row, i) => {
       this.selectMaritial.push({ id: row.id, name: row.status });
     });
+
+    this.state = { isLoading: false, rows: [] };
+    this.refHeader = React.createRef();
+    this.refSearch = React.createRef();
+    const teacher = new m_teacher();
+    this.props.dispatch(initialize(formName, teacher));
   }
 
-  onSubmit = (values) => {
+  onSearch = (value) => {
+    let teachers = [];
+    this.setState({ isLoading: true });
+    if (value.length < 4) return;
+    contactRequest("find", {
+      userType: "teacher",
+      name: "nic",
+      value: value,
+    })
+      .then((response) => {
+        response.data.map((row, i) => {
+          teachers.push({
+            id: row._id,
+            nic: row.nic,
+            title: row.title,
+            name: row.first_name,
+          });
+        });
+        this.setState({ rows: teachers, isLoading: false });
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  searchSelect = (values) => {
+    contactRequest("retrieveByID", { userType: "teacher", _id: values[0].id })
+      .then((response) => {
+        window.scrollTo(0, this.refHeader.current.offsetTop);
+        const data = response.data;
+        const teacher = new m_teacher(data);
+        this.props.dispatch(initialize(formName, teacher));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  onSubmit = (values, dispatch) => {
     console.log(values);
-    Call.Request("Subject", null, values)
-      .then((response) => {})
-      .catch(() => {});
+    values.userType = "teacher";
+    let path = values._id == "" || values._id == undefined ? "add" : "update";
+    console.log(values._id);
+    values.__access_level = undefined;
+    values.__marital_status = undefined;
+    values.__teacher_grade = undefined;
+    values.__title = undefined;
+    values.__user_type = undefined;
+
+    contactRequest(path, values)
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+
+        dispatch(reset(formName));
+        this.refSearch.current.clear();
+        const teacher = new m_teacher();
+        this.props.dispatch(initialize(formName, teacher));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   grades = [
@@ -74,21 +142,43 @@ class Manage extends Component {
   ];
 
   render() {
-    const { classes, handleSubmit, submitting } = this.props;
+    const { classes, handleSubmit, submitting, reset } = this.props;
     return (
       <div>
         <Typography component="h1" variant="h5" align="left">
-          Manage Teachers
+          Teachers
         </Typography>
         <Card mt={4}>
           <Card.Body>
             <Card.Subtitle mb="2" text="muted">
-              teachers
+              teacher accounts
             </Card.Subtitle>
             <Card.Text>
               All teachers, of the organization and their poersonal information
               are listed here.
             </Card.Text>
+            <Row>
+              <Col col="sm-10 md-6">
+                <AsyncTypeahead
+                  id="typeSearch"
+                  isLoading={this.state.isLoading}
+                  onSearch={this.onSearch}
+                  onChange={this.searchSelect}
+                  labelKey={(option) => `(${option.nic}) ${option.name}`}
+                  ref={this.refSearch}
+                  options={this.state.rows}
+                  placeholder="who do you want to search?"
+                />
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+
+        <Card mt={4}>
+          <Card.Body>
+            <Card.Title mb="2" text="muted" ref={this.refHeader}>
+              Edit Teachers
+            </Card.Title>
             <hr />
             <Form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
               <Row mb="2">
@@ -98,9 +188,14 @@ class Manage extends Component {
                   </Typography>
                 </Col>
               </Row>
-
-              <FormSection name="contact">
-                <Contact type="admin" />
+              <Field
+                name="_id"
+                id="txtID"
+                type="hidden"
+                component={renderHidden}
+              />
+              <FormSection name="">
+                <Contact type="teacher" />
               </FormSection>
 
               <Row mb="2">
@@ -191,7 +286,13 @@ class Manage extends Component {
               >
                 Save teacher settings
               </Button>
-              <Button secondary type="reset" color="secondary" mt={2}>
+              <Button
+                secondary
+                type="reset"
+                color="secondary"
+                mt={2}
+                onClick={reset}
+              >
                 Clear changes
               </Button>
             </Form>
@@ -270,6 +371,7 @@ class Manage extends Component {
                     name="completed"
                     id="chkIsCompleted"
                     label="Completed"
+                    type="checkbox"
                     component={renderCheckBox}
                   />
                 </Col>
@@ -292,26 +394,27 @@ class Manage extends Component {
                 </Col>
               </Row>
             </Form>
+
             <ListGroup mt={4}>
               <ListGroup.Item>
                 <Badge success mr={2}>
                   Y
                 </Badge>
                 Moratuwa University - (BSc.) - Physical Science on 2006-2009
-                <Box style={{ float: "right" }}>
+                <Grid style={{ float: "right" }}>
                   <EditOutlined />
                   <DeleteOutline />
-                </Box>
+                </Grid>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Badge warning mr={2}>
                   N
                 </Badge>
                 Peradeniya University - (MSc.) - Physical Science on 2009-2011
-                <Box style={{ float: "right" }}>
+                <Grid style={{ float: "right" }}>
                   <EditOutlined />
                   <DeleteOutline />
-                </Box>
+                </Grid>
               </ListGroup.Item>
             </ListGroup>
           </Card.Body>
@@ -323,5 +426,6 @@ class Manage extends Component {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: "ManageForm",
+  keepDirtyOnReinitialize: true,
+  form: formName,
 })(withStyles(styles)(Manage));

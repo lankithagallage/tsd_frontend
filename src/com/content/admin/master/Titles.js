@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, Grid } from "@material-ui/core";
 import { Field, reduxForm, reset, initialize } from "redux-form";
 import { Edit } from "@material-ui/icons";
 import { Row, Col, Card, Button } from "bootstrap-4-react";
@@ -161,5 +161,7 @@ class Titles extends Component {
 }
 
 export default reduxForm({
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
   form: formName,
 })(withStyles(styles)(Titles));

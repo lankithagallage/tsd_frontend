@@ -66,7 +66,6 @@ class Administrator extends Component {
   };
 
   onSubmit = (values, dispatch) => {
-    console.log(values);
     values.userType = "admin";
     let path = values._id !== "" ? "update" : "add";
     contactRequest(path, values)
@@ -85,7 +84,7 @@ class Administrator extends Component {
   };
 
   render() {
-    const { classes, handleSubmit, submitting } = this.props;
+    const { classes, handleSubmit, submitting, reset } = this.props;
 
     return (
       <div>
@@ -104,6 +103,7 @@ class Administrator extends Component {
             <Row>
               <Col col="sm-10 md-6">
                 <AsyncTypeahead
+                  id="typeSearch"
                   isLoading={this.state.isLoading}
                   onSearch={this.onSearch}
                   onChange={this.searchSelect}
@@ -151,7 +151,13 @@ class Administrator extends Component {
               >
                 Save administrator settings
               </Button>
-              <Button secondary type="reset" color="secondary" mt={2}>
+              <Button
+                secondary
+                type="reset"
+                color="secondary"
+                onClick={reset}
+                mt={2}
+              >
                 Clear changes
               </Button>
             </form>

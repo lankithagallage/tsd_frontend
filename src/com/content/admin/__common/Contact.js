@@ -10,6 +10,7 @@ import {
   renderCheckBox,
   renderSelect,
   renderRadio,
+  RenderPassword,
 } from "../../../../lib/global/helpers";
 
 import df_title from "../../../../lib/class/data/df_title";
@@ -138,6 +139,18 @@ class Contact extends Component {
               placeholder="Passport number"
               smalltext="Enter passport number"
               component={renderTextBox}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col col="sm-12 md-6">
+            <Field
+              name="password"
+              type="password"
+              id="txtPassword"
+              label="Password"
+              placeholder="Password"
+              component={RenderPassword}
             />
           </Col>
         </Row>

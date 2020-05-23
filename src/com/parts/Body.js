@@ -32,15 +32,16 @@ class Body extends Component {
     super(props);
     drawerWidth = this.props.drawerWidth;
   }
+
   render() {
     const { classes } = this.props;
     return (
       <Grid className={classes.container}>
-        <Route path="/admin/*" component={Admin}></Route>
-        <Route path="/teacher/*" component={Teacher}></Route>
-        <Route path="/parent/*" component={Parent}></Route>
-        <Route path="/student/*" component={Student}></Route>
-        <Route path="/*" component={Dashboard}></Route>
+        <Route exact path="/admin/*" component={Admin}></Route>
+        <Route exact path="/teacher/*" component={Teacher}></Route>
+        <Route exact path="/parent/*" component={Parent}></Route>
+        <Route exact path="/student/*" component={Student}></Route>
+        <Route exact path="/" component={Dashboard}></Route>
       </Grid>
     );
   }

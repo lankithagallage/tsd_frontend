@@ -3,21 +3,25 @@ import df_teacher_grade from "./df_teacher_grade";
 import df_marital_status from "./df_marital_status";
 
 class m_teacher extends m_contact {
-  constructor() {
+  constructor(params = null) {
     super();
-    this._id = "";
-    this.reg_no = "";
-    this.reg_date = null;
-    this.end_date = null;
-    this.teacher_grade_id = "";
-    this.marital_status_id = "";
+    if (params == null) {
+      this._id = "";
+      this.reg_no = "";
+      this.reg_date = null;
+      this.end_date = null;
+      this.teacher_grade_id = "";
+      this.marital_status_id = "";
 
-    this.__teacher_grade = new df_teacher_grade();
-    this.__marital_status = new df_marital_status();
+      this.__teacher_grade = new df_teacher_grade();
+      this.__marital_status = new df_marital_status();
+    } else {
+      super.set(params);
+      this.set(params);
+    }
   }
 
   set(values) {
-    super.set(this);
     this._id = values._id;
     this.reg_no = values.reg_no;
     this.teacher_grade_id = values.teacher_grade_id;

@@ -1,78 +1,129 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Typography, Grid } from "@material-ui/core";
-import { EditOutlined, DeleteOutline } from "@material-ui/icons";
-import { Field, reduxForm } from "redux-form";
+import { Typography } from "@material-ui/core";
+import { Field, reduxForm, reset, initialize } from "redux-form";
+import { Edit, DeleteOutline } from "@material-ui/icons";
 import { Row, Col, Card, Form, Button } from "bootstrap-4-react";
 
-import df_occupation from "../../../../lib/class/data/df_occupation";
-import df_occupation_category from "../../../../lib/class/data/df_occupation_category";
-import Call from "../../../../lib/api/Call";
 import {
   renderTextBox,
   renderCheckBox,
   renderSelect,
+  renderHidden,
 } from "../../../../lib/global/helpers";
+import df_occupation from "../../../../lib/class/data/df_occupation";
+import df_occupation_category from "../../../../lib/class/data/df_occupation_category";
+import { occupationCategoryRequest } from "../../../../lib/api/df/OccupationCategoryApi";
+import { occupationRequest } from "../../../../lib/api/df/OccupationApi";
 
 const styles = (theme) => ({});
+const formName = "occupationForm";
 
-class Grades extends Component {
+class Occupation extends Component {
   constructor(props) {
     super(props);
 
-    this.selectCategory = [];
-    this.categories.map((row, i) => {
-      this.selectCategory.push({ id: row.id, name: row.category });
-    });
+    this.state = {
+      categorySelect: [],
+      rows: [],
+    };
+
+    this.categories = [];
+    this.refHeader = React.createRef();
+
+    this.categorySelect = [];
   }
 
-  categories = [
-    new df_occupation_category({
-      id: "asd23as7daasd2",
-      category: "Engineering",
-    }),
-    new df_occupation_category({
-      id: "asd23as7daadssd2",
-      category: "Medical",
-    }),
-  ];
+  loadData() {
+    this.categorySelect = [];
+    occupationCategoryRequest("retrieve")
+      .then((response) => {
+        this.categories = response.data;
+        this.categories.map((row, i) => {
+          this.categorySelect.push({ id: row._id, name: row.category });
+        });
+        this.setState({ categorySelect: this.categorySelect });
+        if (this.categories.length == 0) return;
+        this.loadOccupation(this.categories[0]._id);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-  rows = [
-    new df_occupation({
-      id: "214as5d4as65d",
-      occupation_category_id: "3546asd6a8sdas",
-      occupation: "Engineer",
-      is_active: true,
-      __category: new df_occupation_category({
-        id: "asd23as7daadssd2",
-        category: "Medical",
-      }),
-    }),
-    new df_occupation({
-      id: "214as5d4as65d",
-      occupation_category_id: "doahasldlaosida",
-      occupation: "Doctor",
-      is_active: true,
-      __category: new df_occupation_category({
-        id: "asd23as7daadssd2",
-        category: "Medical",
-      }),
-    }),
-  ];
+  loadOccupation(categoryID) {
+    this.props.dispatch(initialize(formName, new df_occupation()));
+    let categoryList = [];
+    occupationRequest("find", {
+      name: "occupation_category_id",
+      value: categoryID,
+    })
+      .then((cresponse) => {
+        cresponse.data.map((row, i) => {
+          var category = this.categories.filter(
+            (val) => val._id == row.class_section_id
+          );
+          let clss = new df_occupation(row);
+          clss.__category = new df_occupation_category(category);
+          categoryList.push(clss);
+        });
 
-  onSubmit = (values) => {
+        this.setState({ rows: categoryList });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+  onSubmit = (values, dispatch) => {
     console.log(values);
-    Call.Request("Subject", null, values)
-      .then((response) => {})
-      .catch(() => {});
+    let path = values._id !== "" ? "update" : "add";
+    values.__section = undefined;
+    occupationRequest(path, values)
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+        dispatch(reset(formName));
+        this.loadData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  onEditClick(id) {
+    occupationRequest("retrieveByID", { _id: id })
+      .then((response) => {
+        window.scrollTo(0, this.refHeader.current.offsetTop);
+        const data = response.data;
+        const initialValues = data;
+        this.props.dispatch(initialize(formName, initialValues));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  onFilterChange(event) {
+    let id = event.target.value;
+    this.loadOccupation(id);
+  }
+
   render() {
-    const { classes, handleSubmit, submitting } = this.props;
+    const { classes, handleSubmit, submitting, reset } = this.props;
     return (
       <div>
-        <Typography component="h1" variant="h5" align="left">
-          Occupation
+        <Typography
+          component="h1"
+          variant="h5"
+          align="left"
+          ref={this.refHeader}
+        >
+          Occupations
         </Typography>
         <Card mt={4}>
           <Card.Body>
@@ -88,6 +139,12 @@ class Grades extends Component {
               Edit Occupation
             </Card.Title>
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+              <Field
+                name="_id"
+                id="txtID"
+                type="hidden"
+                component={renderHidden}
+              />
               <Row>
                 <Col col="sm-12 md-10 lg-6">
                   <Field
@@ -112,7 +169,7 @@ class Grades extends Component {
                     label="Occupation Category"
                     placeholder="Select Occupation Category"
                     smalltext="Enter the category of the ocupation"
-                    items={this.selectCategory}
+                    items={this.state.categorySelect}
                     component={renderSelect}
                   />
                 </Col>
@@ -120,6 +177,7 @@ class Grades extends Component {
               <Field
                 name="is_active"
                 id="chkIsActive"
+                type="checkbox"
                 label="Activate current category"
                 component={renderCheckBox}
               />
@@ -134,7 +192,13 @@ class Grades extends Component {
               >
                 Save occupation settings
               </Button>
-              <Button secondary type="reset" color="secondary" mt={2}>
+              <Button
+                secondary
+                type="reset"
+                color="secondary"
+                mt={2}
+                onClick={reset}
+              >
                 Clear changes
               </Button>
             </form>
@@ -146,21 +210,41 @@ class Grades extends Component {
               List of available occupations
             </Typography>
           </Col>
-          {this.rows.map((row, i) => (
+          <Col col="sm-12 lg-6" mt={4}>
+            <Form.Group>
+              <label htmlFor="chkSelectCategry">Select Category</label>
+              <Form.Select
+                id="chkSelectCategry"
+                onChange={this.onFilterChange.bind(this)}
+              >
+                {this.state.categorySelect.map((item, i) => (
+                  <option value={item.id} key={i}>
+                    {item.name}
+                  </option>
+                ))}
+                ;
+              </Form.Select>
+              <Form.Text text="muted" xs={12} md={6}>
+                Select category to load inherited occupations
+              </Form.Text>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          {this.state.rows.map((row, i) => (
             <Col col="sm-12 md-6 lg-6 xl-4" key={i}>
-              <Card mt={4} id={row.id}>
+              <Card mt={4} id={row._id}>
                 <Card.Body>
                   <Card.Title>
-                    <Grid style={{ float: "right" }}>
-                      <EditOutlined fontSize="small" color="action" />
-                      <DeleteOutline fontSize="small" color="error" />
-                    </Grid>
-                    {row.id}
+                    {row._id}
+                    <Edit
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={this.onEditClick.bind(this, row._id)}
+                    />
                   </Card.Title>
                   <Card.Subtitle mb="2" text="muted">
                     {row.occupation}
                   </Card.Subtitle>
-                  <Typography>{row.__category.category}</Typography>
                   <Form.Group>
                     <Form.CustomCheckbox
                       checked={row.is_active ? "checked" : ""}
@@ -181,5 +265,6 @@ class Grades extends Component {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: "GradesForm",
-})(withStyles(styles)(Grades));
+  keepDirtyOnReinitialize: true,
+  form: formName,
+})(withStyles(styles)(Occupation));

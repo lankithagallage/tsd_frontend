@@ -6,12 +6,12 @@
       {
         "id": 1,
         "name": "Mark Attendance",
-        "path": "/mark-attendance"
+        "path": "/teacher/attendance-mark"
       },
       {
         "id": 2,
         "name": "View Attendance",
-        "path": "/view-attendance"
+        "path": "/teacher/attendance-view"
       }
     ]
   },
@@ -22,12 +22,12 @@
       {
         "id": 1,
         "name": "View Marks",
-        "path": "/view-marks"
+        "path": "/teacher/marks-view"
       },
       {
         "id": 2,
         "name": "Enter Marks",
-        "path": "/enter-marks"
+        "path": "/teacher/marks-enter"
       }
     ]
   },
@@ -38,12 +38,28 @@
       {
         "id": 1,
         "name": "View Homework",
-        "path": "/view-homework"
+        "path": "/teacher/homework-view"
       },
       {
         "id": 2,
         "name": "Upload Homework",
-        "path": "/upload-homework"
+        "path": "/teacher/homework-upload"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Chat",
+    "items": [
+      {
+        "id": 1,
+        "name": "My Threads",
+        "path": "/teacher/chat-view"
+      },
+      {
+        "id": 2,
+        "name": "New Message",
+        "path": "/teacher/chat-new"
       }
     ]
   }

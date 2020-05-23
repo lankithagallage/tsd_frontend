@@ -83,6 +83,7 @@ class AppDrawer extends Component {
     var user = decrypt(Cookies.get("embose"));
     this.setState({
       FirstName: user.first_name,
+      LastName: user.last_name,
       Email: user.email,
       FirstLetter: user.first_name.charAt(0).toUpperCase(),
     });
@@ -115,11 +116,16 @@ class AppDrawer extends Component {
           <Box className={classes.toolbar} p={1} mt={3} mb={3}>
             <Box className={classes.avetarContainer}>
               <Avatar className={classes.avetar}>
-                {this.state.FirstLetter}
+                <img
+                  src="inc/img/figure/user5.jpg"
+                  style={{ height: 56, width: 56 }}
+                />
               </Avatar>
             </Box>
             <Typography p={0} align="center">
-              <strong>{this.state.FirstName}</strong>
+              <strong>
+                {this.state.FirstName + " " + this.state.LastName}
+              </strong>
             </Typography>
             <Typography p={0} align="center" className={classes.primary}>
               <small>{this.state.Email}</small>
@@ -186,6 +192,7 @@ class AppDrawer extends Component {
                           key={item.id}
                           button
                           component={Link}
+                          selected={item.path == path ? true : false}
                           to={item.path ? item.path : "#"}
                         >
                           <ListItemText primary={item.name} />

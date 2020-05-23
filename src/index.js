@@ -10,8 +10,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import "./inc/css/style.css";
-
 const themeObject = {
   typography: {
     fontFamily: '"Lato", "Helvetica", "Arial", sans-serif',

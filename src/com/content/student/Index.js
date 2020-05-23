@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Grid } from "@material-ui/core/";
+import Dashboard from "./dashboard/Index";
 
-class Student extends Component {
+class Parent extends Component {
   constructor(props) {
     super(props);
   }
@@ -11,11 +12,13 @@ class Student extends Component {
     return (
       <Grid>
         <Router>
-          <Switch></Switch>
+          <Switch>
+            <Route path="/student/dashboard" component={Dashboard}></Route>
+          </Switch>
         </Router>
       </Grid>
     );
   }
 }
 
-export default Student;
+export default Parent;

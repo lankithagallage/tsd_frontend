@@ -9,8 +9,10 @@ import Teachers from "./teachers/Index";
 import Parents from "./parents/Index";
 import Students from "./students/Index";
 import ExtraActivity from "./extra-activity/Index";
+import Notifications from "./modules/Notifications";
 import Chat from "./dashboard/Chat";
 import Downloads from "./dashboard/Downloads";
+import Dashboard from "./dashboard/Index";
 
 class Admin extends Component {
   constructor(props) {
@@ -37,8 +39,10 @@ class Admin extends Component {
             path="/admin/extra-activity/*"
             component={ExtraActivity}
           ></Route>
+          <Route path="/admin/notifications" component={Notifications}></Route>
           <Route path="/admin/chat" component={Chat}></Route>
           <Route path="/admin/downloads" component={Downloads}></Route>
+          <Route path="/admin/dashboard" component={Dashboard}></Route>
         </Switch>
       </Grid>
     );

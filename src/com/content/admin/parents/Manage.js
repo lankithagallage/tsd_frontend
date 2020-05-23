@@ -1,17 +1,9 @@
-import React, { Component } from "react";
-import { Typography, Box } from "@material-ui/core";
-import { EditOutlined, DeleteOutline } from "@material-ui/icons";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Field, reduxForm, FormSection } from "redux-form";
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  ListGroup,
-  Badge,
-} from "bootstrap-4-react";
+import { Typography, TextField } from "@material-ui/core";
+import { Field, reduxForm, reset, initialize, FormSection } from "redux-form";
+import { Row, Col, Card, Form, Button, ListGroup } from "bootstrap-4-react";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 import Contact from "../__common/Contact";
 

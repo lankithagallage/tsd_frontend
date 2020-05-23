@@ -83,7 +83,7 @@ class Login extends Component {
           .then((response) => {
             user = response.data;
             Cookies.set("embose", encrypt(user), { expires: exp });
-            this.props.history.push("/dashboard");
+            this.props.history.push("/" + userType + "/dashboard");
           })
           .catch((error) => {
             console.log(error);
@@ -112,76 +112,97 @@ class Login extends Component {
     const { handleSubmit, pristine, submitting, invalid } = this.props;
 
     return (
-      <Container component="main" maxWidth="xs">
+      <div>
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlined />
-          </Avatar>
-          <Typography component="h1" variant="h5" className={"pacifico"}>
-            Log in to Shilpa
-          </Typography>
-          <form
-            className={classes.form}
-            onSubmit={handleSubmit(this.onSubmit.bind(this))}
-          >
-            <div className={clsx(classes.margin, classes.textField)}></div>
-            <Field
-              name="username"
-              type="text"
-              component={renderTextBox}
-              label="Phone/Index"
-              id="txtUsername"
-            />
-            <Field
-              name="password"
-              type="text"
-              component={RenderPassword}
-              label="Password"
-              id="txtPassword"
-              classes={classes}
-            />
+        <div class="login-page-wrap">
+          <Container component="main" maxWidth="xs">
+            <div class="login-page-content">
+              <div class="login-box">
+                <div className={classes.paper}>
+                  <Avatar className={classes.avatar}>
+                    <LockOutlined />
+                  </Avatar>
+                  <Typography
+                    component="h1"
+                    variant="h5"
+                    className={"pacifico"}
+                  >
+                    Log in to Shilpa
+                  </Typography>
+                  <form
+                    className={classes.form}
+                    onSubmit={handleSubmit(this.onSubmit.bind(this))}
+                  >
+                    <div
+                      className={clsx(classes.margin, classes.textField)}
+                    ></div>
+                    <Field
+                      name="username"
+                      type="text"
+                      component={renderTextBox}
+                      label="Phone/Index"
+                      id="txtUsername"
+                    />
+                    <Field
+                      name="password"
+                      type="text"
+                      component={RenderPassword}
+                      label="Password"
+                      id="txtPassword"
+                      classes={classes}
+                    />
 
-            <FormControlLabel
-              control={
-                <Field name="remember" component={this.renderCheckbox} />
-              }
-              label="Remember me next time"
-            />
-            {this.state.errorMessage && (
-              <Alert severity="error">{this.state.errorMessage}</Alert>
-            )}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              disabled={submitting || pristine || invalid}
-              className={classes.submit}
-            >
-              Log In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="forgot" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
+                    <FormControlLabel
+                      control={
+                        <Field
+                          name="remember"
+                          component={this.renderCheckbox}
+                        />
+                      }
+                      label="Remember me next time"
+                    />
+                    {this.state.errorMessage && (
+                      <Alert severity="error">{this.state.errorMessage}</Alert>
+                    )}
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      disabled={submitting || pristine || invalid}
+                      className={classes.submit}
+                    >
+                      Log In
+                    </Button>
+                    <Grid container>
+                      <Grid item xs>
+                        <Link href="forgot" variant="body2">
+                          Forgot password?
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </form>
+                </div>
+                <Box mt={1} mb={4}>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                  >
+                    {"Copyright © "}{" "}
+                    <Link color="inherit" href="http://www.shilpa.lk">
+                      www.shilpa.lk
+                    </Link>{" "}
+                    {" 2019-"}
+                    {new Date().getFullYear()}
+                    {"."}
+                  </Typography>
+                </Box>
+              </div>
+            </div>
+          </Container>
         </div>
-        <Box mt={8}>
-          <Typography variant="body2" color="textSecondary" align="center">
-            {"Copyright © "}{" "}
-            <Link color="inherit" href="http://www.shilpa.lk">
-              www.shilpa.lk
-            </Link>{" "}
-            {" 2019-"}
-            {new Date().getFullYear()}
-            {"."}
-          </Typography>
-        </Box>
-      </Container>
+      </div>
     );
   }
 }

@@ -1,45 +1,71 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography, Grid } from "@material-ui/core";
-import { EditOutlined, DeleteOutline } from "@material-ui/icons";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, reset, initialize } from "redux-form";
+import { Edit } from "@material-ui/icons";
 import { Row, Col, Card, Form, Button } from "bootstrap-4-react";
 
-import df_occupation_category from "../../../../lib/class/data/df_occupation_category";
-import Call from "../../../../lib/api/Call";
 import {
   renderTextBox,
   renderCheckBox,
-  renderSelect,
+  renderHidden,
 } from "../../../../lib/global/helpers";
+import df_occupation_category from "../../../../lib/class/data/df_occupation_category";
+import { occupationCategoryRequest } from "../../../../lib/api/df/OccupationCategoryApi";
 
 const styles = (theme) => ({});
+const formName = "occupationForm";
 
-class Grades extends Component {
+class Occupation extends Component {
   constructor(props) {
     super(props);
+    this.state = { rows: [] };
   }
 
-  rows = [
-    new df_occupation_category({
-      id: "asd23as7daasd2",
-      category: "Engineering",
-    }),
-    new df_occupation_category({
-      id: "asd23as7daadssd2",
-      category: "Medical",
-    }),
-  ];
+  loadData() {
+    occupationCategoryRequest("retrieve")
+      .then((response) => {
+        this.setState({ rows: response.data });
+        this.props.dispatch(initialize(formName, new df_occupation_category()));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-  onSubmit = (values) => {
+  componentDidMount() {
+    this.loadData();
+  }
+
+  onSubmit = (values, dispatch) => {
     console.log(values);
-    Call.Request("Subject", null, values)
-      .then((response) => {})
-      .catch(() => {});
+    let path = values._id !== "" ? "update" : "add";
+    occupationCategoryRequest(path, values)
+      .then((response) => {
+        console.log(response.data.message);
+        alert(response.data.message);
+        dispatch(reset(formName));
+        this.loadData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  onEditClick(id) {
+    occupationCategoryRequest("retrieveByID", { _id: id })
+      .then((response) => {
+        const data = response.data;
+        const initialValues = data;
+        this.props.dispatch(initialize(formName, initialValues));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
-    const { classes, handleSubmit, submitting } = this.props;
+    const { classes, handleSubmit, submitting, reset } = this.props;
     return (
       <div>
         <Typography component="h1" variant="h5" align="left">
@@ -53,12 +79,20 @@ class Grades extends Component {
             <Card.Text>Manage the occupations of the parents.</Card.Text>
           </Card.Body>
         </Card>
+
         <Card mt={4}>
           <Card.Body>
             <Card.Title mb="2" text="muted">
               Edit Occupation
             </Card.Title>
+
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+              <Field
+                name="_id"
+                id="txtID"
+                type="hidden"
+                component={renderHidden}
+              />
               <Row>
                 <Col col="sm-12 md-10 lg-6">
                   <Field
@@ -76,6 +110,7 @@ class Grades extends Component {
               <Field
                 name="is_active"
                 id="chkIsActive"
+                type="checkbox"
                 label="Activate current category"
                 component={renderCheckBox}
               />
@@ -90,7 +125,13 @@ class Grades extends Component {
               >
                 Save category settings
               </Button>
-              <Button secondary type="reset" color="secondary" mt={2}>
+              <Button
+                secondary
+                type="reset"
+                color="secondary"
+                mt={2}
+                onClick={reset}
+              >
                 Clear changes
               </Button>
             </form>
@@ -102,16 +143,17 @@ class Grades extends Component {
               List of available occupation categories
             </Typography>
           </Col>
-          {this.rows.map((row, i) => (
+
+          {this.state.rows.map((row, i) => (
             <Col col="sm-12 md-6 lg-6 xl-4" key={i}>
-              <Card mt={4} id={row.id}>
+              <Card mt={4} id={row._id}>
                 <Card.Body>
                   <Card.Title>
-                    <Grid style={{ float: "right" }}>
-                      <EditOutlined fontSize="small" color="action" />
-                      <DeleteOutline fontSize="small" color="error" />
-                    </Grid>
-                    {row.id}
+                    {row._id}
+                    <Edit
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={this.onEditClick.bind(this, row._id)}
+                    />
                   </Card.Title>
                   <Card.Subtitle mb="2" text="muted">
                     {row.category}
@@ -136,5 +178,6 @@ class Grades extends Component {
 
 export default reduxForm({
   enableReinitialize: true,
-  form: "GradesForm",
-})(withStyles(styles)(Grades));
+  keepDirtyOnReinitialize: true,
+  form: formName,
+})(withStyles(styles)(Occupation));

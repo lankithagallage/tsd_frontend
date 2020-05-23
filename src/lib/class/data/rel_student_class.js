@@ -2,15 +2,19 @@ import m_student from "./m_student";
 import m_class from "./m_class";
 
 class rel_student_class {
-  constructor() {
-    this._id = "";
-    this.student_id = "";
-    this.class_id = "";
-    this.reg_date = new Date();
-    this.end_date = null;
+  constructor(params = null) {
+    if (params == null) {
+      this._id = "";
+      this.student_id = "";
+      this.class_id = "";
+      this.reg_date = new Date();
+      this.end_date = null;
 
-    this.__student = new m_student();
-    this.__class = new m_class();
+      this.__student = new m_student();
+      this.__class = new m_class();
+    } else {
+      this.set(params);
+    }
   }
 
   set(values) {

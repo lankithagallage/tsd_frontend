@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Grid } from "@material-ui/core/";
+import Dashboard from "./dashboard/Index";
 
 class Parent extends Component {
   constructor(props) {
@@ -11,7 +12,9 @@ class Parent extends Component {
     return (
       <Grid>
         <Router>
-          <Switch></Switch>
+          <Switch>
+            <Route path="/parent/dashboard" component={Dashboard}></Route>
+          </Switch>
         </Router>
       </Grid>
     );
